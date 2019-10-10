@@ -1,0 +1,107 @@
+variable "enable_rabbitmq" {
+  type    = "string"
+  default = "1"
+}
+
+variable "project_name" {
+  description = "The project this RabbitMQ cluster belong to"
+  type        = "string"
+}
+
+variable "rabbitmq_cluster_name" {
+  description = "The name of the RabbitMQ cluster"
+  type        = "string"
+}
+
+variable "rabbitmq_cluster_image_name" {
+  description = "The Image name of the Rabbitmq nodes"
+  type        = "string"
+}
+
+variable "rabbitmq_cluster_compute_flavor_name" {
+  description = "The Flavor name of the Rabbitmq node"
+  type        = "string"
+}
+
+variable "rabbitmq_cluster_keypair_name" {
+  description = "The Keypair name of the RabbitMQ node."
+  type        = "string"
+}
+
+variable "rabbitmq_nodes_count" {
+  type        = "string"
+  description = "The number of RabbitMQ nodes."
+}
+
+variable "rabbitmq_plugin_list" {
+  type        = "string"
+  description = "The list of plugins to enable (separated by ,)"
+  default     = "rabbitmq_prometheus,rabbitmq_management_agent,rabbitmq_management,rabbitmq_peer_discovery_consul"
+}
+
+variable "rabbitmq_cluster_availability_zone" {
+  description = "The availability zone"
+  type        = "string"
+  default     = "null"
+}
+
+variable "rabbitmq_cluster_network" {
+  description = "The Network name of the cluster"
+  type        = "string"
+}
+
+variable "rabbitmq_cluster_subnet" {
+  description = "The Network subnet name of the cluster"
+  type        = "string"
+}
+
+variable "rabbitmq_cluster_security_group_rules" {
+  type        = list(map(any))
+  default     = []
+  description = "The definition os security groups to associate to instance. Only one is allowed"
+}
+
+variable "rabbitmq_cluster_security_groups_to_associate" {
+  type        = list(string)
+  default     = []
+  description = "List of existing security groups to associate to RabbitMQ nodes."
+}
+
+variable "rabbitmq_cluster_metadata" {
+  default = {}
+}
+
+# Project Consul variables
+
+variable "project_consul_domain" {
+  type        = "string"
+  description = "The domain name to use for the Consul cluster"
+}
+
+variable "project_consul_datacenter" {
+  type        = "string"
+  description = "The datacenter name for the consul cluster"
+}
+
+# Auth variables used by consul
+
+variable "os_auth_domain_name" {
+  type    = "string"
+  default = "default"
+}
+
+variable "os_auth_username" {
+  type = "string"
+}
+
+variable "os_auth_password" {
+  type = "string"
+}
+
+variable "os_auth_url" {
+  type = "string"
+}
+
+variable "os_project_id" {
+  type = "string"
+}
