@@ -13,6 +13,12 @@ variable "rabbitmq_cluster_name" {
   type        = "string"
 }
 
+variable "rabbitmq_cluster_erlang_cookie" {
+  description = "The Erlang cookie to use for clustering"
+  type        = "string"
+  default     = ""
+}
+
 variable "rabbitmq_cluster_image_name" {
   description = "The Image name of the Rabbitmq nodes"
   type        = "string"

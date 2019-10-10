@@ -10,6 +10,15 @@ data "openstack_networking_subnet_v2" "rabbitmq_cluster_subnet" {
   name = "${var.rabbitmq_cluster_subnet}"
 }
 
+resource "random_string" "random_erlang_cookie" {
+  length  = 16
+  special = false
+}
+
+locals {
+  rabbitmq_cluster_computed_erlang_cookie = "${var.rabbitmq_cluster_erlang_cookie != "" ? var.rabbitmq_cluster_erlang_cookie : random_string.random_erlang_cookie.result}"
+}
+
 
 data "template_file" "rabbitmq_node_user_data" {
   count = "${var.rabbitmq_nodes_count}"
@@ -17,18 +26,19 @@ data "template_file" "rabbitmq_node_user_data" {
   template = "${file("${path.module}/templates/user-data.tpl")}"
 
   vars = {
-    project_name              = "${var.project_name}"
-    rabbitmq_cluster_name     = "${var.rabbitmq_cluster_name}"
-    rabbitmq_plugin_list      = "${var.rabbitmq_plugin_list}"
-    consul_agent_mode         = "client"
-    consul_cluster_domain     = "${var.project_consul_domain}"
-    consul_cluster_datacenter = "${var.project_consul_datacenter}"
-    consul_cluster_name       = "${var.project_name}-consul"
-    os_auth_domain_name       = "${var.os_auth_domain_name}"
-    os_auth_username          = "${var.os_auth_username}"
-    os_auth_password          = "${var.os_auth_password}"
-    os_auth_url               = "${var.os_auth_url}"
-    os_project_id             = "${var.os_project_id}"
+    project_name                   = "${var.project_name}"
+    rabbitmq_cluster_name          = "${var.rabbitmq_cluster_name}"
+    rabbitmq_cluster_erlang_cookie = "${local.rabbitmq_cluster_computed_erlang_cookie}"
+    rabbitmq_plugin_list           = "${var.rabbitmq_plugin_list}"
+    consul_agent_mode              = "client"
+    consul_cluster_domain          = "${var.project_consul_domain}"
+    consul_cluster_datacenter      = "${var.project_consul_datacenter}"
+    consul_cluster_name            = "${var.project_name}-consul"
+    os_auth_domain_name            = "${var.os_auth_domain_name}"
+    os_auth_username               = "${var.os_auth_username}"
+    os_auth_password               = "${var.os_auth_password}"
+    os_auth_url                    = "${var.os_auth_url}"
+    os_project_id                  = "${var.os_project_id}"
   }
 }
 

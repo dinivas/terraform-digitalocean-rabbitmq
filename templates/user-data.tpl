@@ -63,14 +63,14 @@ write_files:
     permissions: '644'
 -   content: |
         {"service":
-            {"name": "${rabbitmq_cluster_name}",
+            {"name": "${rabbitmq_cluster_name}-dashboard",
             "tags": ["web"],
             "port": 15672
             }
         }
 
     owner: consul:bin
-    path: /etc/consul/consul.d/rabbitmq-service.json
+    path: /etc/consul/consul.d/rabbitmq-dashboard-service.json
     permissions: '644'
 -   content: |
         {"service":
@@ -112,9 +112,16 @@ write_files:
     path: /etc/rabbitmq/rabbitmq.conf
     permissions: '644'
 -   content: |
+        ${rabbitmq_cluster_erlang_cookie}
+
+    owner: rabbitmq:rabbitmq
+    path: /var/lib/rabbitmq/.erlang.cookie
+    permissions: '400'
+-   content: |
         #!/bin/sh
 
         sed -i '1inameserver 127.0.0.1' /etc/resolv.conf
+        sed -i '2isearch node.${consul_cluster_domain}' /etc/resolv.conf
 
         #Remove Consul existing datas
         chmod -R 755 /var/consul
