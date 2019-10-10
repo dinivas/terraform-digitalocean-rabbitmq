@@ -74,7 +74,7 @@ write_files:
     permissions: '644'
 -   content: |
         {"service":
-            {"name": "${rabbitmq_cluster_name}_exporter",
+            {"name": "${rabbitmq_cluster_name}-exporter",
             "tags": ["monitor"],
             "port": 15692
             }
