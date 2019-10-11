@@ -93,9 +93,9 @@ write_files:
         listeners.tcp.default = 5672
         num_acceptors.tcp = 10
         log.file.level = info
-        default_vhost = /
-        default_user = dinivas
-        default_pass = dinivas
+        default_vhost = ${rabbitmq_cluster_name}
+        default_user = ${rabbitmq_cluster_default_username}
+        default_pass = ${rabbitmq_cluster_default_password}
         default_user_tags.administrator = true
         loopback_users = none
         auth_mechanisms.1 = PLAIN
