@@ -51,7 +51,7 @@ data "template_file" "rabbitmq_node_user_data" {
     os_project_id             = "${var.os_project_id}"
 
     pre_configure_script     = ""
-    custom_write_files_block = "${data.template_file.rabbitmq_node_custom_user_data.0.rendered}"
+    custom_write_files_block = "${lookup(data.template_file.rabbitmq_node_custom_user_data[count.index], "rendered")}"
     post_configure_script    = <<-EOT
       systemctl enable rabbitmq-server
       systemctl start rabbitmq-server
