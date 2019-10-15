@@ -89,8 +89,11 @@ module "rabbitmq_node_instance" {
   instance_security_group_rules = "${var.rabbitmq_cluster_security_group_rules}"
   security_groups_to_associate = "${var.rabbitmq_cluster_security_groups_to_associate}"
   user_data = "${data.template_file.rabbitmq_node_user_data.0.rendered}"
-  metadata = "${merge(var.rabbitmq_cluster_metadata, map("consul_cluster_name", format("%s-%s", var.project_name, "consul")))}"
+
+  metadata = "${merge(var.rabbitmq_cluster_metadata, map("consul_cluster_name", format("%s-%s", var.project_name, "consul")), map("project", var.project_name))}"
+
   enabled = "${var.enable_rabbitmq}"
   availability_zone = "${var.rabbitmq_cluster_availability_zone}"
-
+  execute_on_destroy_instance_script = "${var.execute_on_destroy_rabbitmq_node_script}"
+  ssh_via_bastion_config             = "${var.ssh_via_bastion_config}"
 }
