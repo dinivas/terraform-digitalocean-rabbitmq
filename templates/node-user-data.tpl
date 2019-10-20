@@ -43,6 +43,7 @@
         cluster_formation.peer_discovery_backend = rabbit_peer_discovery_consul
         cluster_formation.consul.host = localhost
         cluster_formation.consul.svc = ${rabbitmq_cluster_name}
+        cluster_formation.node_cleanup.only_log_warning = false
         cluster_formation.consul.deregister_after = 90
 
     owner: rabbitmq:rabbitmq
