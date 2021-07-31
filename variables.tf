@@ -73,9 +73,9 @@ variable "rabbitmq_cluster_metadata" {
 }
 
 variable "rabbitmq_enable_logging_graylog" {
-  type = number
+  type        = number
   description = "Should graylog output be enable on this host"
-  default = 0
+  default     = 0
 }
 
 # Project Consul variables
@@ -100,8 +100,9 @@ variable "generic_user_data_file_url" {
 }
 
 variable "execute_on_destroy_rabbitmq_node_script" {
-  type    = string
-  default = "consul leave"
+  type    = list(string)
+  description = "List of inline commands called before instance destruction"
+  default = ["consul leave"]
 }
 
 variable "ssh_via_bastion_config" {

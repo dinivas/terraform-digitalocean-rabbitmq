@@ -99,7 +99,7 @@ resource "null_resource" "rabbitmq_consul_client_leave" {
     bastion_port                            = lookup(var.ssh_via_bastion_config, "bastion_port")
     bastion_ssh_user                        = lookup(var.ssh_via_bastion_config, "bastion_ssh_user")
     bastion_private_key                     = lookup(var.ssh_via_bastion_config, "bastion_private_key")
-    execute_on_destroy_rabbitmq_node_script = var.execute_on_destroy_rabbitmq_node_script
+    execute_on_destroy_rabbitmq_node_script = join(",", var.execute_on_destroy_rabbitmq_node_script)
   }
 
   connection {
@@ -117,10 +117,9 @@ resource "null_resource" "rabbitmq_consul_client_leave" {
   }
 
   provisioner "remote-exec" {
-    when = destroy
-    inline = [
-      self.triggers.execute_on_destroy_rabbitmq_node_script
-    ]
+    when   = destroy
+    inline = split(",", self.triggers.execute_on_destroy_rabbitmq_node_script)
+
     on_failure = continue
   }
 
