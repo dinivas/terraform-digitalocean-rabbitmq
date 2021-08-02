@@ -78,7 +78,7 @@ data "template_file" "rabbitmq_node_custom_user_data" {
 resource "digitalocean_droplet" "rabbitmq_instance" {
   count = var.rabbitmq_nodes_count * var.enable_rabbitmq
 
-  name               = format("%s-%s-%s", var.project_name, var.rabbitmq_cluster_name, count.index)
+  name               = format("%s-%s", var.rabbitmq_cluster_name, count.index)
   image              = var.rabbitmq_cluster_image_name
   size               = var.rabbitmq_cluster_compute_flavor_name
   ssh_keys           = [data.digitalocean_ssh_key.rabbitmq_cluster.0.id]
@@ -94,11 +94,11 @@ resource "null_resource" "rabbitmq_consul_client_leave" {
 
   triggers = {
     private_ip                              = digitalocean_droplet.rabbitmq_instance[count.index].ipv4_address_private
-    host_private_key                        = lookup(var.ssh_via_bastion_config, "host_private_key")
+    host_private_key                        = var.host_private_key
     bastion_host                            = lookup(var.ssh_via_bastion_config, "bastion_host")
     bastion_port                            = lookup(var.ssh_via_bastion_config, "bastion_port")
     bastion_ssh_user                        = lookup(var.ssh_via_bastion_config, "bastion_ssh_user")
-    bastion_private_key                     = lookup(var.ssh_via_bastion_config, "bastion_private_key")
+    bastion_private_key                     = var.bastion_private_key
     execute_on_destroy_rabbitmq_node_script = join(",", var.execute_on_destroy_rabbitmq_node_script)
   }
 

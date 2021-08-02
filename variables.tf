@@ -109,3 +109,6 @@ variable "ssh_via_bastion_config" {
   description = "config map used to connect via bastion ssh"
   default     = {}
 }
+
+variable "host_private_key" {}
+variable "bastion_private_key" {}
